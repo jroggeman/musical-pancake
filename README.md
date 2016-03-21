@@ -10,12 +10,12 @@ and then install any dependencies:
 
     pip install -r requirements.txt
 
-If you add any dependencies via pip, make sure to save them and commit the new
-requirements file:
+Or just run `make init`.  If you add any dependencies via pip, make sure to save
+them and commit the new requirements file:
 
     pip freeze > requirements.txt
 
-When you're finished working, make sure to `deactivate`.
+Or just run `make freeze`.  When you're finished working, make sure to `deactivate`.
 
 ## Tests
 Currently have tests in their own package, which makes it pretty straightforward
@@ -29,4 +29,4 @@ are easy.  Running
     python -m unittest discover
 
 finds and runs all tests of the format `test_*.py`, which I figured would be
-common, so I put that in a small script to save typing: `./run_tests`.
+common, so I put that in a small script to save typing: `make test`.
