@@ -6,7 +6,16 @@ After cloning, enter virtual environment:
 
     source venv/bin/activate
 
-and start work!  Make sure to `deactivate` when you're done.
+and then install any dependencies:
+
+    pip install -r requirements.txt
+
+If you add any dependencies via pip, make sure to save them and commit the new
+requirements file:
+
+    pip freeze > requirements.txt
+
+When you're finished working, make sure to `deactivate`.
 
 ## Tests
 Currently have tests in their own package, which makes it pretty straightforward
