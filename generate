@@ -1,0 +1,41 @@
+#!venv/bin/python
+
+import sys
+
+def main():
+    if len(sys.argv) < 2:
+        print('Usage: generate <module_within_learn>')
+        sys.exit(1)
+
+    new_file = sys.argv[1]
+
+    with open('test/test_' + new_file + '.py', 'w') as f:
+        f.write('import unittest\n')
+        f.write('import learn.' + new_file + '\n')
+        f.write('\n')
+        f.write('class Test' + _underscore_to_camelcase(new_file) +
+                '(unittest.TestCase):\n')
+        f.write('    pass\n')
+        f.write('\n')
+        f.write('    # def test_something(self):\n')
+        f.write('    #     self.assertEquals(1, 1)\n')
+        f.write('\n')
+        f.write('if __name__ == "__main__":\n')
+        f.write('    unittest.main()\n')
+
+def _underscore_to_camelcase(value):
+    output = ""
+    first_word_passed = False
+    for word in value.split("_"):
+        if not word:
+            output += "_"
+            continue
+        if first_word_passed:
+            output += word.capitalize()
+        else:
+            output += word.lower()
+        first_word_passed = True
+    return output.capitalize()
+
+if __name__ == "__main__":
+    main()
