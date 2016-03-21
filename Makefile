@@ -1,8 +1,10 @@
-init:
+init: requirements.txt
 	pip install -r requirements.txt
 
-test:
+test: FORCE
 	python -m unittest discover
 
-freeze:
+freeze: FORCE
 	pip freeze > requirements.txt
+
+FORCE:
