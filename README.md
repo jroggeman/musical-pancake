@@ -28,5 +28,5 @@ are easy.  Running
 
     python -m unittest discover
 
-finds and runs all tests of the format `test_*.py`, which I figured would be
-common, so I put that in a small script to save typing: `make test`.
+or just `make test` finds and runs all tests of the format `test_*.py`.
+
