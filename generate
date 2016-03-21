@@ -24,18 +24,8 @@ def main():
         f.write('    unittest.main()\n')
 
 def _underscore_to_camelcase(value):
-    output = ""
-    first_word_passed = False
-    for word in value.split("_"):
-        if not word:
-            output += "_"
-            continue
-        if first_word_passed:
-            output += word.capitalize()
-        else:
-            output += word.lower()
-        first_word_passed = True
-    return output.capitalize()
+    return ''.join([x.capitalize() for x in value.split('_')])
+
 
 if __name__ == "__main__":
     main()

@@ -28,5 +28,9 @@ are easy.  Running
 
     python -m unittest discover
 
-or just `make test` finds and runs all tests of the format `test_*.py`.
+or just `make test` finds and runs all tests of the format `test_*.py`.  To
+quickly generate a new test for `learn/example_module.py`, run
 
+    ./generate example_module
+
+This will create `test/test_example_module.py` and fill in testing boilerplate.
