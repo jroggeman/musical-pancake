@@ -22,7 +22,10 @@ via pip, make sure to save them and commit the new requirements file:
 
     pip freeze > requirements.txt
 
-Or just run `make freeze`.  When you're finished working, make sure to `deactivate`.
+Or just run `make freeze`.  Finally, before you start work, download the datasets,
+rename the reviews file to `reviews.json`, and put it into `data/`.
+
+When you're finished working, make sure to `deactivate`.
 
 ## Tests
 Currently have tests in their own package, which makes it pretty straightforward
