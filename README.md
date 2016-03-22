@@ -27,6 +27,10 @@ rename the reviews file to `reviews.json`, and put it into `data/`.
 
 When you're finished working, make sure to `deactivate`.
 
+## Notebooks
+I (Joel) sometimes use notebooks for working through a problem.  You can check
+them out by running `jupyter notebook`.
+
 ## Tests
 Currently have tests in their own package, which makes it pretty straightforward
 to run them without obnoxious imports.  Running
