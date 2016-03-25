@@ -2,18 +2,9 @@ from random import shuffle
 import preprocess
 
 def engage(train_model, model_test, file = '../data/reviews.json', additional_preprocess = None):
-    print('Beginning preprocessing...')
-    all_examples = preprocess.preprocess_file(file)
-    print('Done.\n')
+    example_stream = preprocess.stream_examples(file, additional_preprocess)
 
-    if additional_preprocess is not None:
-        print('Running additional preprocessing...')
-        all_examples = additional_preprocess(all_examples)
-        print('Done.\n')
-
-    # Randomize order before k-fold
-    shuffle(all_examples)
-
+    # TODO Modify the rest to handle the new stream
     chunk_size = len(all_examples) / 5
     accuracies = []
     for i in range(5):

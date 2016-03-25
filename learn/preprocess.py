@@ -20,3 +20,13 @@ def preprocess_file(filename):
     examples = [Example(ex['text'], ex['votes']) for ex in stream]
 
     return examples
+
+def stream_examples(filename, additional_preprocessing = None):
+    stream = stream_json(filename)
+
+    for ex in stream:
+        e = Example(ex['text'], ex['votes'])
+        if additional_preprocessing is not None:
+            e = additional_preprocessing(e)
+
+        yield e
