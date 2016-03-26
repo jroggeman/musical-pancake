@@ -21,12 +21,12 @@ def preprocess_file(filename):
 
     return examples
 
-def stream_examples(filename, additional_preprocessing = None):
+def stream_examples(filename, extract_features = None):
     stream = stream_json(filename)
 
     for ex in stream:
         e = Example(ex['text'], ex['votes'])
-        if additional_preprocessing is not None:
-            e = additional_preprocessing(e)
+        if extract_features is not None:
+            e = extract_features(e)
 
         yield e
