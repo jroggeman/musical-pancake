@@ -6,13 +6,13 @@ import sys
 def engage(initialize_models, train_with_example, model_test, filename='../data/reviews.json', extract_features=None):
     # TODO Magic number; better way to handle this in future? Don't want to read whole file
     length_of_examples = 15714
-    accuracies = []
 
     example_stream = preprocess.stream_examples(filename, extract_features)
 
     models, testing_examples = train_models(example_stream, length_of_examples, initialize_models, train_with_example)
 
     # Now run tests for each fold:
+    accuracies = []
     for k in range(5):
         number_correct = evaluate(models[k], model_test, testing_examples[k])
 
