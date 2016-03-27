@@ -1,9 +1,9 @@
 from random import shuffle
 import preprocess
-import pdb
+import sys
 
-def engage(initialize_models, train_model_stochastic, model_test, file = '../data/reviews.json', extract_features = None):
 
+def engage(initialize_models, train_model_stochastic, model_test, file='../data/reviews.json', extract_features=None):
     # TODO Magic number; better way to handle this in future?
     length_of_examples = 15714
     chunk_size = length_of_examples / 5
@@ -22,7 +22,6 @@ def engage(initialize_models, train_model_stochastic, model_test, file = '../dat
 
     # For each of the possible five folds:
     for i in range(5):
-
         # We iterate over each fifth of the indices to be used as the test set.
         # Build a left and right boundary of this region:
         left_boundary = i * chunk_size
@@ -78,13 +77,14 @@ def engage(initialize_models, train_model_stochastic, model_test, file = '../dat
         print(str(k + 1) + '. Results:')
 
         print(str(number_correct) + '/' + str(len(testing_examples[k])) + ' = ' +
-                str(number_correct / float(len(testing_examples[k]))) + '%')
+              str(number_correct / float(len(testing_examples[k]))) + '%')
 
         accuracies.append(number_correct / float(len(testing_examples[k])))
 
     overall_accuracy = mean(accuracies)
 
     print('Overall accuracy: ' + str(overall_accuracy))
+
 
 def evaluate(model, model_test, testing_examples):
     number_correct = 0
@@ -95,10 +95,11 @@ def evaluate(model, model_test, testing_examples):
 
     return number_correct
 
+
 def progress_bar(progress):
-    sys.stdout.write('\r[{0}] {1}%'.format('#'*progress + ' '*(100-progress), progress))
+    sys.stdout.write('\r[{0}] {1}%'.format('#' * progress + ' ' * (100 - progress), progress))
     sys.stdout.flush()
+
 
 def mean(numbers):
     return sum(numbers) / float(len(numbers))
-
