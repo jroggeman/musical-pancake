@@ -71,8 +71,6 @@ def engage(initialize_models, train_model_stochastic, model_test, file = '../dat
             elif index in testing_sets[k]:
                 testing_examples[k].append(example)
 
-    pdb.set_trace()
-
     # Now run tests for each fold:
     for k in range(5):
         number_correct = evaluate(models[k], model_test, testing_examples[k])
