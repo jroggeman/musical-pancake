@@ -1,6 +1,8 @@
 from stream_json import stream_json
 
+
 class Example:
+
     def __init__(self, review, votes):
         self.review = review
         self.votes = votes
@@ -21,7 +23,8 @@ def preprocess_file(filename):
 
     return examples
 
-def stream_examples(filename, extract_features = None):
+
+def stream_examples(filename, extract_features=None):
     stream = stream_json(filename)
 
     for ex in stream:

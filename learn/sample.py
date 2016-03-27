@@ -1,12 +1,16 @@
 import main
 import sys
 
+
 def progress_bar(current_example):
     progress = int(current_example / 157.14)
-    sys.stdout.write('\r[{0}] {1}% ({2}/1569264)'.format('#'*progress + ' '*(100-progress), progress, current_example))
+    sys.stdout.write('\r[{0}] {1}% ({2}/1569264)'.format('#' * \
+                     progress + ' ' * (100 - progress), progress, current_example))
     sys.stdout.flush()
 
     # Each model has .review and .votes
+
+
 def train_model(stream, train_indices, test_indices):
     print('Training model...')
     sum_useful = 0
@@ -23,10 +27,10 @@ def train_model(stream, train_indices, test_indices):
 
         progress_bar(i)
 
-
     percent_useful = float(sum_useful) / total_sum
 
     return percent_useful > 0.5, testing
+
 
 def model_test(model, example):
     return model
