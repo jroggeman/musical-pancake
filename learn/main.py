@@ -3,13 +3,12 @@ import preprocess
 import sys
 
 
-def engage(initialize_models, train_model_stochastic, model_test, file='../data/reviews.json', extract_features=None):
+def engage(initialize_models, train_with_example, model_test, filename='../data/reviews.json', extract_features=None):
     # TODO Magic number; better way to handle this in future?
     length_of_examples = 15714
-    chunk_size = length_of_examples / 5
     accuracies = []
 
-    example_stream = preprocess.stream_examples(file, extract_features)
+    example_stream = preprocess.stream_examples(filename, extract_features)
 
     # Generate a list of indices for each example and shuffle them
     indices = range(length_of_examples)
@@ -61,7 +60,7 @@ def engage(initialize_models, train_model_stochastic, model_test, file='../data/
             # And if the example we're looking at is part of training for that
             # fold, add it stochastically for the model
             if index in training_sets[k]:
-                models[k] = train_model_stochastic(models[k], example)
+                models[k] = train_with_example(models[k], example)
 
             # or add it to our list of test examples if it's for testing.
             # TODO: This will cause memory issues again, since we'll end

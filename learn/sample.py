@@ -31,4 +31,4 @@ def train_model(stream, train_indices, test_indices):
 def model_test(model, example):
     return model
 
-main.engage(train_model, model_test, file='../data/smaller_reviews.json')
+main.engage(train_model, model_test, filename='../data/smaller_reviews.json')
