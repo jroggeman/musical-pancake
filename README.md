@@ -31,6 +31,26 @@ When you're finished working, make sure to `deactivate`.
 I (Joel) sometimes use notebooks for working through a problem.  You can check
 them out by running `jupyter notebook`.
 
+## Test Harness
+We've setup a test harness that allows one to easily swap out learning models by
+defining a few short functions.
+
+1. `initialize_models()` - takes no parameters and initializes a
+   list of five empty learning models of your chosen type
+2. `train_model_stochastic(model, example)` - takes an existing
+   model and a single example, and stochastically trains the model using the
+   single example, returning the modified model.
+3. `model_test(model, example)` - takes an existing model and a single example,
+   and returns a boolean of whether or not it expects the example to have >0
+   usefulness or not.
+
+Once those are defined, run
+
+    import main
+    main.engage(initialize_models, train_model_stochastic, model_test, filename=<filename>)
+
+to kick off the training and testing process and print results.
+
 ## Tests
 Currently have tests in their own package, which makes it pretty straightforward
 to run them without obnoxious imports.  Running
