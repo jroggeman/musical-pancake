@@ -33,7 +33,8 @@ them out by running `jupyter notebook`.
 
 ## Test Harness
 We've setup a test harness that allows one to easily swap out learning models by
-defining a few short functions.
+defining a few short functions.  Specifically, we need to define a class that
+has three short instance methods:
 
 1. `initialize_models()` - takes no parameters and initializes a
    list of five empty learning models of your chosen type
@@ -47,7 +48,8 @@ defining a few short functions.
 Once those are defined, run
 
     import main
-    main.engage(initialize_models, train_model_stochastic, model_test, filename=<filename>)
+    model = Model() # Or whatever you named the class
+    main.engage(model, model_test, filename=<filename>)
 
 to kick off the training and testing process and print results.
 
