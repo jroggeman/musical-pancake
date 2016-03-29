@@ -4,9 +4,7 @@ import sys
 
 
 def engage(
-        initialize_models,
-        train_with_example,
-        model_test,
+        model,
         filename='../data/reviews.json',
         extract_features=None):
     # TODO Magic number; better way to handle this in future? Don't want to
@@ -16,12 +14,13 @@ def engage(
     example_stream = preprocess.stream_examples(filename, extract_features)
 
     models, testing_examples = train_models(
-        example_stream, length_of_examples, initialize_models, train_with_example)
+        example_stream, length_of_examples, model.initialize_models,
+        model.train_model_stochastic)
 
     # Now run tests for each fold:
     accuracies = []
     for k in range(5):
-        number_correct = evaluate(models[k], model_test, testing_examples[k])
+        number_correct = evaluate(models[k], model.model_test, testing_examples[k])
 
         print(str(k + 1) + '. Results:')
 
