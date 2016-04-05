@@ -1,21 +1,27 @@
 from random import shuffle
 import preprocess
 import sys
-
+import pdb
 
 def engage(
         model,
         filename='../data/reviews.json',
-        extract_features=None):
+        extract_features=None,
+        stochastic=True):
     # TODO Magic number; better way to handle this in future? Don't want to
     # read whole file
     length_of_examples = 15714
 
     example_stream = preprocess.stream_examples(filename, extract_features)
 
+    if stochastic:
+        training = model.train_model_stochastic
+    else:
+        training = model.train_model
+
     models, testing_examples = train_models(
         example_stream, length_of_examples, model.initialize_models,
-        model.train_model_stochastic)
+        training, stochastic)
 
     # Now run tests for each fold:
     accuracies = []
@@ -43,18 +49,29 @@ def train_models(
         example_stream,
         length_of_examples,
         initialize_models,
-        train_with_example):
+        train_with_example,
+        stochastic):
+    pdb.set_trace()
     models = initialize_models()
+    training_examples = [[], [], [], [], []]
     testing_examples = [[], [], [], [], []]
     training_sets, testing_sets = generate_k_fold_indices(length_of_examples)
 
     for index, example in enumerate(example_stream):
         for k in range(5):
             if index in training_sets[k]:
-                models[k] = train_with_example(models[k], example)
+                if stochastic:
+                    models[k] = train_with_example(models[k], example)
+                else:
+                    training_examples[k].append(example)
             # TODO Handle potential memory issues
             elif index in testing_sets[k]:
                 testing_examples[k].append(example)
+
+    # Run our global training function if we aren't doing stochastic learning
+    if not stochastic:
+        for k in range(5):
+            models[k] = train_with_example(models[k], training_examples[k])
 
     return models, testing_examples
 
