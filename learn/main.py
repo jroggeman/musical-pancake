@@ -7,7 +7,8 @@ def engage(
         model,
         filename='../data/reviews.json',
         extract_features=None,
-        stochastic=True):
+        stochastic=True,
+        sample_size=15714):
     # TODO Magic number; better way to handle this in future? Don't want to
     # read whole file
     length_of_examples = 15714
@@ -21,7 +22,7 @@ def engage(
 
     models, testing_examples = train_models(
         example_stream, length_of_examples, model.initialize_models,
-        training, stochastic)
+        training, stochastic, sample_size)
 
     # Now run tests for each fold:
     accuracies = []
@@ -50,12 +51,12 @@ def train_models(
         length_of_examples,
         initialize_models,
         train_with_example,
-        stochastic):
-    pdb.set_trace()
+        stochastic,
+        sample_size):
     models = initialize_models()
     training_examples = [[], [], [], [], []]
     testing_examples = [[], [], [], [], []]
-    training_sets, testing_sets = generate_k_fold_indices(length_of_examples)
+    training_sets, testing_sets = generate_k_fold_indices(length_of_examples, sample_size)
 
     for index, example in enumerate(example_stream):
         for k in range(5):
@@ -76,12 +77,19 @@ def train_models(
     return models, testing_examples
 
 
-def generate_k_fold_indices(length_of_examples):
+def generate_k_fold_indices(length_of_examples, sample_size):
     training_sets = []
     testing_sets = []
 
+    # By default, choose from a random array of all possible indices
     stream_indices = range(length_of_examples)
     shuffle(stream_indices)
+
+    # If we specify a sample size, limit the indices that we'll look at by removing
+    # elements from our training indices until we meet the right size
+    if sample_size > 0:
+        stream_indices = stream_indices[:sample_size]
+        length_of_examples = sample_size
 
     chunk_size = length_of_examples / 5
 
