@@ -1,21 +1,28 @@
 from random import shuffle
 import preprocess
 import sys
-
+import pdb
 
 def engage(
         model,
         filename='../data/reviews.json',
-        extract_features=None):
+        extract_features=None,
+        stochastic=True,
+        sample_size=15714):
     # TODO Magic number; better way to handle this in future? Don't want to
     # read whole file
     length_of_examples = 15714
 
     example_stream = preprocess.stream_examples(filename, extract_features)
 
+    if stochastic:
+        training = model.train_model_stochastic
+    else:
+        training = model.train_model
+
     models, testing_examples = train_models(
         example_stream, length_of_examples, model.initialize_models,
-        model.train_model_stochastic)
+        training, stochastic, sample_size)
 
     # Now run tests for each fold:
     accuracies = []
@@ -43,28 +50,46 @@ def train_models(
         example_stream,
         length_of_examples,
         initialize_models,
-        train_with_example):
+        train_with_example,
+        stochastic,
+        sample_size):
     models = initialize_models()
+    training_examples = [[], [], [], [], []]
     testing_examples = [[], [], [], [], []]
-    training_sets, testing_sets = generate_k_fold_indices(length_of_examples)
+    training_sets, testing_sets = generate_k_fold_indices(length_of_examples, sample_size)
 
     for index, example in enumerate(example_stream):
         for k in range(5):
             if index in training_sets[k]:
-                models[k] = train_with_example(models[k], example)
+                if stochastic:
+                    models[k] = train_with_example(models[k], example)
+                else:
+                    training_examples[k].append(example)
             # TODO Handle potential memory issues
             elif index in testing_sets[k]:
                 testing_examples[k].append(example)
 
+    # Run our global training function if we aren't doing stochastic learning
+    if not stochastic:
+        for k in range(5):
+            models[k] = train_with_example(models[k], training_examples[k])
+
     return models, testing_examples
 
 
-def generate_k_fold_indices(length_of_examples):
+def generate_k_fold_indices(length_of_examples, sample_size):
     training_sets = []
     testing_sets = []
 
+    # By default, choose from a random array of all possible indices
     stream_indices = range(length_of_examples)
     shuffle(stream_indices)
+
+    # If we specify a sample size, limit the indices that we'll look at by removing
+    # elements from our training indices until we meet the right size
+    if sample_size > 0:
+        stream_indices = stream_indices[:sample_size]
+        length_of_examples = sample_size
 
     chunk_size = length_of_examples / 5
 
