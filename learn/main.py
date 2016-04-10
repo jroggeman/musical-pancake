@@ -26,24 +26,23 @@ def engage(
 
     # Now run tests for each fold:
     accuracies = []
+    result = {}
     for k in range(5):
         number_correct = evaluate(models[k], model.model_test, testing_examples[k])
-
         print(str(k + 1) + '. Results:')
-
         print(str(number_correct) +
               '/' +
               str(len(testing_examples[k])) +
               ' = ' +
               str(number_correct /
-                  float(len(testing_examples[k]))) +
+                  float(len(testing_examples[k])) * 100) +
               '%')
-
         accuracies.append(number_correct / float(len(testing_examples[k])))
-
+        result[str(k)] = (number_correct, len(testing_examples[k]), number_correct / float(len(testing_examples[k])))
     overall_accuracy = mean(accuracies)
 
     print('Overall accuracy: ' + str(overall_accuracy))
+    return result
 
 
 def train_models(
