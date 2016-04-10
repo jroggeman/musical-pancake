@@ -48,6 +48,8 @@ def sentence_tokenize(text):
 
 @text_cached(SENTIMENT_CACHE)
 def sentiment(text):
+    """ returns a list of text sentiment polarities in the format:
+            {compound: 0.3153, neg: 0.157, neu: 0.534, pos: 0.309}    """
     sentences=sentence_tokenize(text)
     vader_analyzer = nltk.sentiment.SentimentIntensityAnalyzer()
     results = [vader_analyzer.polarity_scores(sentence) for sentence in sentences]
