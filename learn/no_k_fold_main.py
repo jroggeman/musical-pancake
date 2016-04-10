@@ -28,8 +28,8 @@ def shelley(features):
         return model
 
     def model_test(model, example):
-        model_result = model.network.activate([func(example) for func in model.features])[0] > 0
-        return model_result == (example.votes['useful'] > 0)
+        model_result = model.network.activate([func(example) for func in model.features])[0] > 0.5
+        return model_result
 
     jole = Jole(initialize_models, train_model, model_test)
     return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=100)
@@ -98,8 +98,9 @@ def train_models(
     for ex in example_stream:
         if count >= sample_size:
             break
-        if count%4 == 0:
+        if count>=(3*sample_size/4):
             testing_examples.append(ex)
+
         else:
             training_examples.append(ex)
         count += 1
@@ -116,9 +117,10 @@ def evaluate(model, model_test, testing_examples):
     number_correct = 0
     for example in testing_examples:
         result = model_test(model, example)
-        print result
+
         if example.is_correct(result):
             number_correct += 1
+
 
     return number_correct
 
