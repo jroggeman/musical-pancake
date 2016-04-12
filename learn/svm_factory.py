@@ -1,32 +1,51 @@
-from preprocess import preprocess_file
 from sklearn import svm
+from main import engage
 
 
-def feature_matrix(features, examples):
-    return [[feat(ex) for feat in features] for ex in examples]
+def supportvector(features, sample_size=500):
+
+    def call_all_features(features, examples, train):
+        return zip(*[feat(examples, train) for feat in features])
+
+    def answer_list(examples):
+        return [ex.votes['useful'] > 0 for ex in examples]
+
+    def initialize_models():
+        return [SVMModel() for _ in range(5)]
+
+    def train_model(model, examples):
+        train = call_all_features(features, examples, True)
+        ans = answer_list(examples)
+        model.classifier.fit(train, ans)
+        return model
+
+    def model_test(model, example):  # TODO modify so it takes multiple examples at once? use call_all_features()
+        return model.classifier.predict(call_all_features(features, [example], False))
+
+    jole = Jole(initialize_models, train_model, model_test)
+    return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=sample_size)
 
 
-def answer_list(examples):
-    return [ex.votes['useful'] > 0 for ex in examples]
+class SVMModel(object):
+    def __init__(self):
+        self.classifier = svm.SVC()
 
 
-def supportvector(features):
-    examples = preprocess_file('../data/smaller_reviews.json')
-    idx = int(len(examples) * .8)
-    train_ex = examples[:idx]
-    test_ex = examples[idx:]
-    training, testing = feature_matrix(features, train_ex), feature_matrix(features, test_ex)
-    train_ans, test_ans = answer_list(train_ex), answer_list(test_ex)
-    classifier = svm.SVC()
-    classifier.fit(training, train_ans)
-    guesses = classifier.predict(testing)
-    result = [a == b for a, b in zip(guesses, train_ans)]
-    print sum(result) / float(len(result))
+class Jole(object):
+    def __init__(self, initialize_models, train_model, model_test):
+        self.initialize_models = initialize_models
+        self.train_model = train_model
+        self.model_test = model_test
 
 
 if __name__ == '__main__':
+    def length(examples, train):
+        return [len(x.review) for x in examples]
+
+    def isgoodinit(examples, train):
+        return ['good' in x.review for x in examples]
+
     supportvector([
-        lambda x: len(x.review),
-        lambda x: 1 if 'good' in x.review else 0,
-        lambda x: 1 if 'not' in x.review else 0
-    ])
+        length,
+        isgoodinit,
+    ], sample_size=3000)
