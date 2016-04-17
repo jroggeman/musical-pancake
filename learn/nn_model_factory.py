@@ -2,35 +2,41 @@ from main import engage
 from pybrain.datasets import SupervisedDataSet
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
+from preprocess import preprocess_file
 
 
-def joal(features):
+def neuralnet(features, sample_size=20, hidden_neurons=3):
     """
     This function takes in a list of features (functions that take in an example and return some value based on it)
     and creates and engages a neural network model, returning a dictionary with results from testing.
     :param features: list of functions to act as features in a NN model
+    :param hidden_neurons:
     :return: result dictionary, keys are which model was being tested (0-5),
             values are tuples of form (number correct, number tested, percent correct)
     """
+
+    def call_all_features(features, examples, train):
+        result = zip(*[feat(examples, train) for feat in features])
+        return zip(list(result), [ex.votes['useful'] > 0 for ex in examples])  # [((f1, f2, ..), actual), ..]
+
     def initialize_models():
         return [NNModel(features) for _ in range(5)]
 
     def train_model(model, examples):
-        for example in examples:
-            model.dataset.addSample(tuple([func(example) for func in model.features]), (example.votes['useful'] > 0,))
-
-        model.network = buildNetwork(len(model.features), 3, 1)  # 3 hidden layers for now. can change at any time
+        matrix = call_all_features(features, examples, True)
+        for vector, result in matrix:
+            model.dataset.addSample(tuple(vector), (result,))
+        model.network = buildNetwork(len(model.features), hidden_neurons, 1)
         model.trainer = BackpropTrainer(model.network, model.dataset)
         model.trainer.train()
         model.trainer.trainUntilConvergence()
         return model
 
-    def model_test(model, example):
-        model_result = model.network.activate([func(example) for func in model.features])[0] > 0
-        return model_result == (example.votes['useful'] > 0)
+    def model_test(model, example):  # TODO modify so it takes multiple examples at once? use call_all_features()
+        return model.network.activate([func([example], False)[0] for func in model.features])[0] > 0.5
 
     jole = Jole(initialize_models, train_model, model_test)
-    return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=20)
+    return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=sample_size)
 
 
 class NNModel(object):
@@ -47,8 +53,19 @@ class Jole(object):
         self.model_test = model_test
 
 
+def make_matrix(features, n):
+    examples = preprocess_file('../data/smaller_reviews.json')[:n]
+    return [[feat(ex) for feat in features] for ex in examples]
+
+
 if __name__ == '__main__':
-    result = joal([
-        lambda x: 'good' in x.review,
-    ])
+
+    def feat1(examples, is_training):
+        return map(lambda x: len(x.review), examples)
+
+    def feat2(examples, is_training):
+        return map(lambda x: 'good' in x.review, examples)
+
+    features = [feat1, feat2]
+    result = neuralnet(features, 10, 3)
     print result
