@@ -5,7 +5,19 @@ from main import engage
 def supportvector(features, sample_size=500):
 
     def call_all_features(features, examples, train):
-        return zip(*[feat(examples, train) for feat in features])
+        final = []
+        for feat in features:
+            final += feat(examples,train)
+            """f = feat(examples,train)
+            if type(f[0]) == list:
+                final += f
+            else:
+                final.append(f)"""
+
+        #print zip(*final)
+        return zip(*final)
+
+        #return zip(*[feat(examples, train) for feat in features])
 
     def answer_list(examples):
         return [ex.votes['useful'] > 0 for ex in examples]
@@ -16,6 +28,7 @@ def supportvector(features, sample_size=500):
     def train_model(model, examples):
         train = call_all_features(features, examples, True)
         ans = answer_list(examples)
+        #print train
         model.classifier.fit(train, ans)
         return model
 
