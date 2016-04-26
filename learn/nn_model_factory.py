@@ -16,7 +16,15 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
     """
 
     def call_all_features(features, examples, train):
-        result = zip(*[feat(examples, train) for feat in features])
+        final = []
+        for feat in features:
+            f = feat(examples,train)
+            if type(f[0]) == list:
+                final += f
+            else:
+                final.append(f)
+
+        result = zip(*final)
         return zip(list(result), [ex.votes['useful'] > 0 for ex in examples])  # [((f1, f2, ..), actual), ..]
 
     def initialize_models():
