@@ -5,7 +5,16 @@ from main import engage
 def supportvector(features, sample_size=500):
 
     def call_all_features(features, examples, train):
-        return zip(*[feat(examples, train) for feat in features])
+        final = []
+        for feat in features:
+            f = feat(examples,train)
+            if type(f[0]) == list:
+                final += f
+            else:
+                final.append(f)
+
+        return zip(*final)
+
 
     def answer_list(examples):
         return [ex.votes['useful'] > 0 for ex in examples]
