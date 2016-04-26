@@ -33,12 +33,22 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
     def train_model(model, examples):
         matrix = call_all_features(features, examples, True)
         for vector, result in matrix:
-            model.dataset.addSample(tuple(vector), (result,))
+            model.dataset.addSample(vector, (result,))
         model.network = buildNetwork(len(model.features), hidden_neurons, 1)
         model.trainer = BackpropTrainer(model.network, model.dataset)
         model.trainer.train()
         model.trainer.trainUntilConvergence()
         return model
+
+    def test_all_features(features, example):
+        final = []
+        for feat in features:
+            f= feat([example],False)
+            if type(f[0]) == list:
+                final += f[0][0]
+            else:
+                final +=f[0]
+
 
     def model_test(model, example):  # TODO modify so it takes multiple examples at once? use call_all_features()
         return model.network.activate([func([example], False)[0] for func in model.features])[0] > 0.5
