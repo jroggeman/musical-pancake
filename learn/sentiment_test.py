@@ -3,11 +3,12 @@ from features import sentiment
 from features.feature_group import Group
 from nn_model_factory import neuralnet
 from bow import bow
+from scores import readability, smog
 
 
 seq = [50,75,100,150,200,300,400,500,600,700,800,900,1000,1500]
 
-g = Group([sentiment.sentiment_variance,sentiment.raw_sentiment ])
+g = Group([sentiment.sentiment_variance,sentiment.raw_sentiment, readability, smog])
 
 print "NEURAL NET"
 num_grouped = len(g.feature_list)
