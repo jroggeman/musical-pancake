@@ -33,16 +33,27 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
     def train_model(model, examples):
         matrix = call_all_features(features, examples, True)
         for vector, result in matrix:
-            model.dataset.addSample(tuple(vector), (result,))
+            model.dataset.addSample(vector, (result,))
         model.network = buildNetwork(len(model.features), hidden_neurons, 1)
         model.trainer = BackpropTrainer(model.network, model.dataset)
         model.trainer.train()
         model.trainer.trainUntilConvergence()
         return model
 
+    def test_all_features(features, example):
+        final = []
+        for feat in features:
+            f = feat([example], False)
+            if type(f[0]) == list:
+                final.append(f[0][0])
+            else:
+                final.append([0])
+        return final
+
     def model_test(model, example):
         input = test_all_features(model.features, example)
         return model.network.activate(input)[0] > 0.5
+
 
     jole = Jole(initialize_models, train_model, model_test)
     return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=sample_size)
