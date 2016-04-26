@@ -1,5 +1,5 @@
 import nltk
-import musicalpancake.utils as utils
+import utils
 import numpy
 
 

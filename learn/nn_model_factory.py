@@ -5,7 +5,7 @@ from pybrain.supervised.trainers import BackpropTrainer
 from preprocess import preprocess_file
 
 
-def neuralnet(features, sample_size=20, hidden_neurons=3):
+def neuralnet(features, sample_size=20, num_features=None,hidden_neurons=3):
     """
     This function takes in a list of features (functions that take in an example and return some value based on it)
     and creates and engages a neural network model, returning a dictionary with results from testing.
@@ -28,13 +28,13 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
         return zip(list(result), [ex.votes['useful'] > 0 for ex in examples])  # [((f1, f2, ..), actual), ..]
 
     def initialize_models():
-        return [NNModel(features) for _ in range(5)]
+        return [NNModel(features,num_features) for _ in range(5)]
 
     def train_model(model, examples):
         matrix = call_all_features(features, examples, True)
         for vector, result in matrix:
             model.dataset.addSample(vector, (result,))
-        model.network = buildNetwork(len(model.features), hidden_neurons, 1)
+        model.network = buildNetwork(num_features, hidden_neurons, 1)
         model.trainer = BackpropTrainer(model.network, model.dataset)
         model.trainer.train()
         model.trainer.trainUntilConvergence()
@@ -45,7 +45,9 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
         for feat in features:
             f = feat([example], False)
             if type(f[0]) == list:
-                final.append(f[0][0])
+                for ex in f:
+                    final.append(ex[0])
+                #final.append(f[0][0])
             else:
                 final.append([0])
         return final
@@ -59,11 +61,25 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
     return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=sample_size)
 
 
+
+
 class NNModel(object):
-    def __init__(self, features):
+
+    def __init__(self, features, input_values=None):
+
         self.features = features
-        self.dataset = SupervisedDataSet(len(self.features), 1)
+
+        self.input_values = input_values
+
+        if self.input_values is None:
+
+            self.input_values = len(self.features)
+
+        self.dataset = SupervisedDataSet(self.input_values, 1)
+
         self.trainer, self.network = None, None
+
+
 
 
 class Jole(object):
