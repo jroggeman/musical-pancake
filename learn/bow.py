@@ -1,8 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
-from pybrain.datasets import SupervisedDataSet
-from pybrain.supervised.trainers import BackpropTrainer
 
 vectorizer = None
 selector = None
@@ -32,8 +30,27 @@ def bow(examples, is_training, number_of_features=5):
         counts = vectorizer.fit_transform(examples).toarray()
 
         selector = SelectKBest(chi2, k=number_of_features)
-        return selector.fit_transform(counts, votes)
+        array_result = selector.fit_transform(counts, votes)
+
+        final = []
+        for feat in range(len(array_result[0])):
+            final.append([])
+
+        for ex in array_result:
+            for ind,feat_ex in enumerate(ex):
+                final[ind].append(feat_ex)
+        return final
+
     else:
         counts = vectorizer.transform(examples).toarray()
-        return selector.transform(counts)
+        array_result =  selector.transform(counts)
+        final = []
+        for feat in range(len(array_result[0])):
+            final.append([])
+
+        for ex in array_result:
+            for ind,feat_ex in enumerate(ex):
+                final[ind].append(feat_ex)
+        return final
+
 
