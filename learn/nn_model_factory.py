@@ -32,8 +32,9 @@ def neuralnet(features, sample_size=20, hidden_neurons=3):
         model.trainer.trainUntilConvergence()
         return model
 
-    def model_test(model, example):  # TODO modify so it takes multiple examples at once? use call_all_features()
-        return model.network.activate([func([example], False)[0] for func in model.features])[0] > 0.5
+    def model_test(model, example):
+        input = test_all_features(model.features, example)
+        return model.network.activate(input)[0] > 0.5
 
     jole = Jole(initialize_models, train_model, model_test)
     return engage(jole, filename='../data/smaller_reviews.json', stochastic=False, sample_size=sample_size)
