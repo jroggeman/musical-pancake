@@ -11,4 +11,14 @@ def sentiment_variance(review):
 def raw_sentiment(review):
     return sum(x['compound'] for x in utils.sentiment(review.review))
 
+def strong_sentiment(review):
+    count = 0
+    for x in utils.sentiment(review.review):
+        if x['neg'] > 0.5:
+            count -=1
+        elif x['pos'] > 0.5:
+            count +=1
+
+    return count
+
 
