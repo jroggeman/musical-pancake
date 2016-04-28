@@ -1,11 +1,15 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import chi2
+from sklearn.feature_selection import f_classif
+from sklearn.decomposition import TruncatedSVD
+from sklearn.preprocessing import Normalizer
 
 vectorizer = None
+decomposer = None
+normalizer = None
 selector = None
 
-def bow(examples, is_training, number_of_features=5):
+def bow(examples, is_training, number_of_features=2):
     """Calculates the bag of words features.
 
     Arguments:
@@ -22,6 +26,8 @@ def bow(examples, is_training, number_of_features=5):
 
     # Store ugly global state
     global vectorizer
+    global normalizer
+    global decomposer
     global selector
 
     # Initialize if first (training) call
@@ -29,7 +35,16 @@ def bow(examples, is_training, number_of_features=5):
         vectorizer = TfidfVectorizer()
         counts = vectorizer.fit_transform(examples).toarray()
 
-        selector = SelectKBest(chi2, k=number_of_features)
+        normalizer = Normalizer()
+        counts = normalizer.fit_transform(counts)
+
+        # decompose to 100 for LSA
+        decomposer = TruncatedSVD(n_components=100)
+        counts = decomposer.fit_transform(counts)
+
+        k = min(number_of_features, counts.shape[1])
+
+        selector = SelectKBest(f_classif, k=k)
         array_result = selector.fit_transform(counts, votes)
 
         final = []
@@ -43,7 +58,10 @@ def bow(examples, is_training, number_of_features=5):
 
     else:
         counts = vectorizer.transform(examples).toarray()
+        counts = normalizer.transform(counts)
+        counts = decomposer.transform(counts)
         array_result =  selector.transform(counts)
+
         final = []
         for feat in range(len(array_result[0])):
             final.append([])
