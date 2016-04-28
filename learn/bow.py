@@ -9,7 +9,7 @@ decomposer = None
 normalizer = None
 selector = None
 
-def bow(examples, is_training, number_of_features=2):
+def bow(examples, is_training, number_of_features=5):
     """Calculates the bag of words features.
 
     Arguments:

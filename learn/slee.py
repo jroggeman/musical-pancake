@@ -59,10 +59,10 @@ def main():
        the top n parameter settings
     """
     # 1) sequence: training example counts for each run. I'd recommend keeping this kinda low to see which parameter settings do best, then test higher numbers on those parameters
-    seq = [250]
+    seq = [2500]
 
     # 2) group_features: the functions that need examples passed in one at a time
-    group_features = [sentiment.sentiment_variance, sentiment.raw_sentiment, smog, readability, in_out.in_out]
+    group_features = [sentiment.sentiment_variance, sentiment.raw_sentiment, smog, readability]
 
     # 3) features: the functions that can take all examples in at the same time
     features = [bow]
