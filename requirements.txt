@@ -35,5 +35,6 @@ singledispatch==3.4.0.3
 six==1.10.0
 sklearn==0.0
 terminado==0.6
+textstat==0.2
 tornado==4.3
 traitlets==4.2.1

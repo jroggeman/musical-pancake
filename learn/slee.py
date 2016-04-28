@@ -1,10 +1,12 @@
 from svm_factory import supportvector
 from nb_factory import naivebayes
 from features import sentiment
+from features import in_out
 from features.feature_group import Group
 from nn_model_factory import neuralnet
 import itertools
 from bow import bow
+from scores import smog, readability
 
 
 def mean(iter):
@@ -57,19 +59,18 @@ def main():
        the top n parameter settings
     """
     # 1) sequence: training example counts for each run. I'd recommend keeping this kinda low to see which parameter settings do best, then test higher numbers on those parameters
-    seq = [10]
+    seq = [2500]
 
     # 2) group_features: the functions that need examples passed in one at a time
-    group_features = [sentiment.sentiment_variance, sentiment.raw_sentiment]
+    group_features = [sentiment.sentiment_variance, sentiment.raw_sentiment, smog, readability]
 
     # 3) features: the functions that can take all examples in at the same time
     features = [bow]
 
     # 4) model: which model to use. Only 'svm', 'nn', and 'both' work right now.
     # model = 'nn'
-    # model = 'svm'
+    # model = 'both'
     model = 'svm'
-    # model = 'nb'
 
     # 5) n: the number of top results to display after executing. if n > the number of results, it prints all of them
     n = 5
