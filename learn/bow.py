@@ -6,7 +6,7 @@ from sklearn.preprocessing import Normalizer
 
 vectorizer = None
 decomposer = None
-normalizer = None
+#normalizer = None
 selector = None
 
 def bow(examples, is_training, number_of_features=5):
@@ -26,7 +26,7 @@ def bow(examples, is_training, number_of_features=5):
 
     # Store ugly global state
     global vectorizer
-    global normalizer
+    #global normalizer
     global decomposer
     global selector
 
@@ -35,8 +35,8 @@ def bow(examples, is_training, number_of_features=5):
         vectorizer = TfidfVectorizer()
         counts = vectorizer.fit_transform(examples).toarray()
 
-        normalizer = Normalizer()
-        counts = normalizer.fit_transform(counts)
+        #normalizer = Normalizer()
+        #counts = normalizer.fit_transform(counts)
 
         # decompose to 100 for LSA
         decomposer = TruncatedSVD(n_components=100)
@@ -58,7 +58,7 @@ def bow(examples, is_training, number_of_features=5):
 
     else:
         counts = vectorizer.transform(examples).toarray()
-        counts = normalizer.transform(counts)
+        #counts = normalizer.transform(counts)
         counts = decomposer.transform(counts)
         array_result =  selector.transform(counts)
 
