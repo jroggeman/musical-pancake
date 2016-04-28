@@ -43,6 +43,7 @@ def slee(seq, group_features, features, model, n):
                             result = mod(all_features, num)
                             avg_accuracy = mean([result[key][2] for key in result])
                             total_results.append((avg_accuracy, num, name, list(gfs) + all_features[1:]))
+                            print 'Accuracy: {}, Model: {}, Features: {}'.format(avg_accuracy, name, list(gfs) + all_features[1:])
 
     sorted_results = sorted(total_results, key=lambda x: x[0], reverse=True)  # sorts on accuracy high-low
     print ' RESULTS '.center(30, '*')
@@ -57,7 +58,7 @@ def main():
        the top n parameter settings
     """
     # 1) sequence: training example counts for each run. I'd recommend keeping this kinda low to see which parameter settings do best, then test higher numbers on those parameters
-    seq = [10]
+    seq = [150]
 
     # 2) group_features: the functions that need examples passed in one at a time
     group_features = [sentiment.sentiment_variance, sentiment.raw_sentiment]
@@ -65,7 +66,7 @@ def main():
     # 3) features: the functions that can take all examples in at the same time
     features = [bow]
 
-    # 4) model: which model to use. Only 'svm', 'nn', and 'both' work right now.
+    # 4) model: which model to use.
     # model = 'nn'
     # model = 'svm'
     model = 'svm'
