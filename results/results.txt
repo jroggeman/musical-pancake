@@ -68,3 +68,94 @@ Overall accuracy: 0.5506
 Overall accuracy: 0.5506
 #############svm##############
 [<function raw_sentiment at 0x7fcf54409140>]
+1. Results:
+582/1000 = 58.2%
+2. Results:
+590/1000 = 59.0%
+3. Results:
+579/1000 = 57.9%
+4. Results:
+581/1000 = 58.1%
+5. Results:
+568/1000 = 56.8%
+Overall accuracy: 0.58
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>, <function strong_sentiment at 0x7fcf544091b8>]
+1. Results:
+553/1000 = 55.3%
+2. Results:
+552/1000 = 55.2%
+3. Results:
+563/1000 = 56.3%
+4. Results:
+557/1000 = 55.7%
+5. Results:
+587/1000 = 58.7%
+Overall accuracy: 0.5624
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>, <function strong_sentiment at 0x7fcf544091b8>, <function smog at 0x7fcf545d1c80>]
+1. Results:
+585/1000 = 58.5%
+2. Results:
+572/1000 = 57.2%
+3. Results:
+548/1000 = 54.8%
+4. Results:
+540/1000 = 54.0%
+5. Results:
+550/1000 = 55.0%
+Overall accuracy: 0.559
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>, <function raw_sentiment at 0x7fcf54409140>, <function strong_sentiment at 0x7fcf544091b8>]
+1. Results:
+582/1000 = 58.2%
+2. Results:
+589/1000 = 58.9%
+3. Results:
+574/1000 = 57.4%
+4. Results:
+576/1000 = 57.6%
+5. Results:
+593/1000 = 59.3%
+Overall accuracy: 0.5828
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>, <function smog at 0x7fcf545d1c80>]
+1. Results:
+559/1000 = 55.9%
+2. Results:
+547/1000 = 54.7%
+3. Results:
+578/1000 = 57.8%
+4. Results:
+534/1000 = 53.4%
+5. Results:
+537/1000 = 53.7%
+Overall accuracy: 0.551
+#############svm##############
+[<function raw_sentiment at 0x7fcf54409140>, <function smog at 0x7fcf545d1c80>]
+1. Results:
+565/1000 = 56.5%
+2. Results:
+593/1000 = 59.3%
+3. Results:
+577/1000 = 57.7%
+4. Results:
+594/1000 = 59.4%
+5. Results:
+604/1000 = 60.4%
+Overall accuracy: 0.5866
+#############svm##############
+[<function raw_sentiment at 0x7fcf54409140>, <function smog at 0x7fcf545d1c80>]bow
+1. Results:
+574/1000 = 57.4%
+2. Results:
+584/1000 = 58.4%
+3. Results:
+579/1000 = 57.9%
+4. Results:
+596/1000 = 59.6%
+5. Results:
+619/1000 = 61.9%
+Overall accuracy: 0.5904
+
+Process finished with exit code 0
