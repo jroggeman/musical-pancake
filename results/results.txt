@@ -1,0 +1,70 @@
+/home/shelley/Documents/musicalpancake/venv/bin/python /home/shelley/Documents/musicalpancake/learn/sentiment_test.py
+/home/shelley/Documents/musicalpancake/venv/local/lib/python2.7/site-packages/nltk/twitter/__init__.py:20: UserWarning: The twython library has not been installed. Some functionality from the twitter package will not be available.
+  warnings.warn("The twython library has not been installed. "
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>]
+1. Results:
+541/1000 = 54.1%
+2. Results:
+520/1000 = 52.0%
+3. Results:
+551/1000 = 55.1%
+4. Results:
+557/1000 = 55.7%
+5. Results:
+553/1000 = 55.3%
+Overall accuracy: 0.5444
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>, <function raw_sentiment at 0x7fcf54409140>, <function strong_sentiment at 0x7fcf544091b8>, <function smog at 0x7fcf545d1c80>]bow
+1. Results:
+581/1000 = 58.1%
+2. Results:
+613/1000 = 61.3%
+3. Results:
+610/1000 = 61.0%
+4. Results:
+582/1000 = 58.2%
+5. Results:
+602/1000 = 60.2%
+Overall accuracy: 0.5976
+#############svm##############
+bow
+1. Results:
+613/1000 = 61.3%
+2. Results:
+593/1000 = 59.3%
+3. Results:
+614/1000 = 61.4%
+4. Results:
+598/1000 = 59.8%
+5. Results:
+607/1000 = 60.7%
+Overall accuracy: 0.605
+#############svm##############
+[<function smog at 0x7fcf545d1c80>]
+1. Results:
+549/1000 = 54.9%
+2. Results:
+544/1000 = 54.4%
+3. Results:
+548/1000 = 54.8%
+4. Results:
+547/1000 = 54.7%
+5. Results:
+565/1000 = 56.5%
+Overall accuracy: 0.5506
+#############svm##############
+[<function sentiment_variance at 0x7fcf54402c80>]
+1. Results:
+529/1000 = 52.9%
+2. Results:
+569/1000 = 56.9%
+3. Results:
+545/1000 = 54.5%
+4. Results:
+567/1000 = 56.7%
+5. Results:
+543/1000 = 54.3%
+Overall accuracy: 0.5506
+#############svm##############
+[<function raw_sentiment at 0x7fcf54409140>]
